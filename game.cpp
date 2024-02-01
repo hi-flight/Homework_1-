@@ -4,6 +4,8 @@ float screenwidth = 800;
 float screenheight = 600;
 Vector2 targetDestination;
 
+float speed = 300;
+
 Rectangle box = Rectangle{screenwidth/2 - 150, screenheight/2 - 150, 300, 300};
 
 int main() {
@@ -25,16 +27,20 @@ int main() {
         targetDestination = GetMousePosition();
 
         if (targetDestination.y < box.y) {
-            box.y -= 300 * delta_time;
+            box.y -= speed * delta_time;
+            targetDestination.y = box.y - 1;
         }
         if (targetDestination.x < box.x) {
-            box.x -= 300 * delta_time;
+            box.x -= speed * delta_time;
+            targetDestination.x = box.x - 1;
         } 
-        if (targetDestination.y > box.x) {
-            box.x += 300 * delta_time;
+        if (targetDestination.y > box.y) {
+            box.y += speed * delta_time;
+            targetDestination.y = box.y + 1;
         } 
         if (targetDestination.x > box.x) {
-            box.x += 300 * delta_time;
+            box.x += speed * delta_time;
+            targetDestination.x = box.x + 1;
         } 
 
         camera_view.target = Vector2{ box.x + box.width / 2, box.y + box.height / 2 };

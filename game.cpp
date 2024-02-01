@@ -27,18 +27,18 @@ int main() {
         targetDestination = GetMousePosition();
 
         if (targetDestination.y < box.y) {
-            box.y -= speed * delta_time;
+            box.y -= targetDestination.y * delta_time;
             targetDestination.y = box.y - 1;
         }
         if (targetDestination.x < box.x) {
             box.x -= speed * delta_time;
             targetDestination.x = box.x - 1;
         } 
-        if (targetDestination.y > box.y) {
+        if (targetDestination.y > box.y + 300) {
             box.y += speed * delta_time;
             targetDestination.y = box.y + 1;
         } 
-        if (targetDestination.x > box.x) {
+        if (targetDestination.x > box.x + 300) {
             box.x += speed * delta_time;
             targetDestination.x = box.x + 1;
         } 
@@ -49,8 +49,8 @@ int main() {
         ClearBackground(BLACK);
 
         BeginMode2D(camera_view);
-        DrawRectangleLines(box.x, box.y, box.width, box.height, WHITE);
         DrawRectangle(screenwidth/2, screenheight/2, 400, 400, GREEN);
+        DrawRectangleLines(box.x, box.y, box.width, box.height, WHITE);
         EndMode2D();
 
         EndDrawing();

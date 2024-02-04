@@ -8,10 +8,14 @@ float speed = 300;
 
 Rectangle box = Rectangle{screenwidth/2 - 150, screenheight/2 - 150, 300, 300};
 
+Texture2D background;
+
 int main() {
     InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");
     SetTargetFPS(60);
 
+    background = LoadTexture("I spy.png");
+   
     int cam_type;
     Camera2D camera_view = {0};
     float EDGE_X[2], EDGE_Y[2];
@@ -27,18 +31,18 @@ int main() {
         targetDestination = GetMousePosition();
 
         if (targetDestination.y < box.y) {
-            box.y -= targetDestination.y * delta_time;
+            box.y -= speed * delta_time;
             targetDestination.y = box.y - 1;
         }
         if (targetDestination.x < box.x) {
             box.x -= speed * delta_time;
             targetDestination.x = box.x - 1;
         } 
-        if (targetDestination.y > box.y + 300) {
+        if (targetDestination.y > box.y) {
             box.y += speed * delta_time;
             targetDestination.y = box.y + 1;
         } 
-        if (targetDestination.x > box.x + 300) {
+        if (targetDestination.x > box.x) {
             box.x += speed * delta_time;
             targetDestination.x = box.x + 1;
         } 
@@ -49,8 +53,9 @@ int main() {
         ClearBackground(BLACK);
 
         BeginMode2D(camera_view);
-        DrawRectangle(screenwidth/2, screenheight/2, 400, 400, GREEN);
+        DrawTextureEx(background, Vector2{0, 0}, 0, 1, WHITE);
         DrawRectangleLines(box.x, box.y, box.width, box.height, WHITE);
+        DrawRectangle(screenwidth/2, screenheight/2, 400, 400, GREEN);
         EndMode2D();
 
         EndDrawing();
@@ -59,3 +64,4 @@ int main() {
 
     return 0;
 }
+

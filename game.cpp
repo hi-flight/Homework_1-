@@ -1,4 +1,5 @@
 #include <raylib.h>
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -8,40 +9,38 @@ float Lerp(float start, float end, float t){
 
 float screenwidth = 800;
 float screenheight = 600;
+
 Vector2 targetDestination;
 
 float speed = 300;
 
 Rectangle box = Rectangle{screenwidth/2 - 150, screenheight/2 - 150, 300, 300};
 
-Texture2D background;
-
 bool zoom = false;
 int main() {
-    /*
-    std::ifstream myfile("settings.txt");
-    std::string mystring;
-    if ( myfile.is_open() ) { // always check whether the file is open
-    myfile >> mystring; // pipe file's content into stream
-    std::cout << mystring; // pipe stream's content to standard output
-    }   
-    */
-
-    InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");
-    SetTargetFPS(60);
-
-    background = LoadTexture("I spy.png");
-   
     int cam_type;
     Camera2D camera_view = {0};
     float EDGE_X[2], EDGE_Y[2];
 
-    // camera's focus
-    camera_view.target = { screenwidth/2, screenheight/2 };
-    //camera's offset
-    camera_view.offset = { screenwidth/2, screenheight/2 };
-    // camera’s zoom
-    camera_view.zoom = 1.0f;
+    std::string backgroundFilename;
+    Texture2D background;
+    std::ifstream inputFile("settings.txt");
+
+    if (!inputFile.is_open()){
+        std::cerr << "Error: Failed to open settings.txt" << std::endl;
+        return 1;
+    }
+    
+    inputFile >> backgroundFilename;
+    inputFile >> camera_view.target.x >> camera_view.target.y; // Load camera target
+    inputFile >> camera_view.offset.x >> camera_view.offset.y; // Load camera offset
+    inputFile >> camera_view.zoom; // Load camera zoom
+    inputFile.close();
+
+    InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");
+    SetTargetFPS(60);
+   
+    background = LoadTexture(backgroundFilename.c_str());
 
     while (!WindowShouldClose()) {
         float delta_time = GetFrameTime();
@@ -79,13 +78,17 @@ int main() {
         camera_view.target.x = Lerp(camera_view.target.x, box.x + box.width / 2, 0.1f);
         camera_view.target.y = Lerp(camera_view.target.y, box.y + box.height / 2, 0.1f);
 
+        Vector2 rectanglePosition = {
+            camera_view.target.x - camera_view.offset.x - (box.width/2),
+            camera_view.target.y - camera_view.offset.y - (box.height/2)
+        };
+
         BeginDrawing();
         ClearBackground(BLACK);
 
         BeginMode2D(camera_view);
         DrawTextureEx(background, Vector2{0, 0}, 0, 1, WHITE);
-        DrawRectangleLines(box.x, box.y, box.width, box.height, WHITE);
-        //DrawRectangle(screenwidth/2, screenheight/2, 400, 400, GREEN);
+        DrawRectangleLines(camera_view.target.x, camera_view.target.y, box.width, box.height, WHITE);
         EndMode2D();
 
         EndDrawing();
@@ -94,4 +97,3 @@ int main() {
 
     return 0;
 }
-

@@ -59,19 +59,32 @@ int main() {
         float delta_time = GetFrameTime();
         targetDestination = GetMousePosition();
 
+        Vector2 worldMousePosition;
+        worldMousePosition.x = (targetDestination.x - camera_view.offset.x) / camera_view.zoom + camera_view.target.x;
+        worldMousePosition.y = (targetDestination.y - camera_view.offset.y) / camera_view.zoom + camera_view.target.y;
+
         // Archived Cam Movement code
-         if (targetDestination.y < box.y) {
+
+        if (worldMousePosition.x < box.x + box.width / 2) {
+            // Move box left
+            box.x -= speed * delta_time;
+        }
+        if (worldMousePosition.x > box.x + box.width / 2) {
+            // Move box right
+            box.x += speed * delta_time;
+        }
+         if (worldMousePosition.y < box.y + 150) {
              box.y -= speed * delta_time;
          }
-         if (targetDestination.x < box.x) {
-             box.x -= speed * delta_time;
-         } 
-         if (targetDestination.y > box.y) {
+        //  if (worldMousePosition.x < box.x) {
+        //      box.x -= speed * delta_time;
+        //  } 
+         if (worldMousePosition.y > box.y + 150) {
              box.y += speed * delta_time;
          } 
-         if (targetDestination.x > box.x - 300) {
-             box.x += speed * delta_time;
-         } 
+        //  if (worldMousePosition.x > box.x - 300) {
+        //      box.x += speed * delta_time;
+        //  } 
 
         //Check if the mouse is inside the box
         //bool mouseInsideBox = CheckCollisionPointRec(targetDestination, box);

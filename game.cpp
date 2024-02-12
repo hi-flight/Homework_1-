@@ -20,7 +20,10 @@ struct Character{
     Vector2 position, min, max;
     bool isfound; 
 };
+
 bool zoom = false;
+bool objectSelected = false;
+
 int main() {
     int cam_type;
     Camera2D camera_view = {0};
@@ -106,25 +109,34 @@ int main() {
                 camera_view.target.y += (worldMousePosition.y - camera_view.target.y) * (1.0f - 1.0f / camera_view.zoom);
             }
         }
-        
-        if (zoom){
+        if (zoom){{
             if (IsMouseButtonPressed(0)) {
-            // Character Selection code here
+                for (int i = 0; i < 5; i++) {
+                    Rectangle characterBoundingBox = { characters[i].min.x, characters[i].min.y,
+                                                    characters[i].max.x - characters[i].min.x,
+                                                    characters[i].max.y - characters[i].min.y };
 
-            }
-            if (IsMouseButtonPressed(1)) {
-            // Zoom out
-                zoom = false;
-                camera_view.zoom = zoom ? 3.0f : 1.0f;
-
-                // Adjust camera target position based on mouse position
-                camera_view.target.x += (worldMousePosition.x - camera_view.target.x) * (1.0f - 1.0f / camera_view.zoom);
-                camera_view.target.y += (worldMousePosition.y - camera_view.target.y) * (1.0f - 1.0f / camera_view.zoom);
+                    if (CheckCollisionPointRec(worldMousePosition, characterBoundingBox)) {
+                        // If the mouse is inside the bounding box of the character
+                        characters[i].isfound = true;
+                        objectSelected = true;
+                        // Optionally, you may break the loop if you only want to select the first found character
+                        // break;
+                    }
+                }
             }
         }
+        if (IsMouseButtonPressed(1)) {
+        // Zoom out
+            zoom = false;
+            camera_view.zoom = zoom ? 3.0f : 1.0f;
+
+            // Adjust camera target position based on mouse position
+            camera_view.target.x += (worldMousePosition.x - camera_view.target.x) * (1.0f - 1.0f / camera_view.zoom);
+            camera_view.target.y += (worldMousePosition.y - camera_view.target.y) * (1.0f - 1.0f / camera_view.zoom);
+        }
+    }
         
-
-
         BeginDrawing();
         ClearBackground(BLACK);
 

@@ -43,7 +43,7 @@ int main() {
     for(int i=0; i<5 ; i++){
         inputFile>>characters[i].name>>characters[i].position.x>>characters[i].position.y;
         characters[i].min = {characters[i].position.x, characters[i].position.y};
-        characters[i].max = {characters[i].position.x+200, characters[i].position.y+200};
+        characters[i].max = {characters[i].position.x+250, characters[i].position.y+250};
         characters[i].isfound = false;
         std::cout<<"Object #"<<i<<": "<<characters[i].name<<" "<<characters[i].position.x<<" "<<characters[i].position.y<<std::endl;
     }
@@ -137,6 +137,22 @@ int main() {
         }
     }
         
+    bool allCharactersFound = true;
+    for (int i = 0; i < 5; i++) {
+        if (!characters[i].isfound) {
+            allCharactersFound = false;
+            break;
+        }
+    }
+        if (allCharactersFound) {
+            BeginDrawing();
+            ClearBackground(BLACK);
+
+            DrawText("You found all characters! You win!", screenwidth / 4, screenheight / 2, 30, WHITE);
+
+         EndDrawing();
+    
+    } else {
         BeginDrawing();
         ClearBackground(BLACK);
 
@@ -155,9 +171,9 @@ int main() {
             DrawText(characters[i].name.c_str(), 10, 25*i, 24, color);
         }       
         EndDrawing();
+        }
     }
     CloseWindow();
-
     return 0;
 }
 

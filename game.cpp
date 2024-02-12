@@ -22,10 +22,10 @@ float screenheight = 600;
 
 Vector2 targetDestination;
 
-float speed = 300;
+float speed = 900;
 
 // Adjusted the box initialization to be at the center of the screen
-Rectangle box = Rectangle{screenwidth / 2 - 150, screenheight / 2 - 150, 300, 300};
+Rectangle box = Rectangle{screenheight/2, screenwidth/2, 300, 300};
 
 bool zoom = false;
 int main() {
@@ -60,31 +60,27 @@ int main() {
         targetDestination = GetMousePosition();
 
         // Archived Cam Movement code
-        // //if (targetDestination.y < box.y) {
-        //     box.y -= speed * delta_time;
-        //     targetDestination.y = box.y - 1;
-        // }
-        // if (targetDestination.x < box.x) {
-        //     box.x -= speed * delta_time;
-        //     targetDestination.x = box.x - 1;
-        // } 
-        // if (targetDestination.y > box.y) {
-        //     box.y += speed * delta_time;
-        //     targetDestination.y = box.y + 1;
-        // } 
-        // if (targetDestination.x > box.x) {
-        //     box.x += speed * delta_time;
-        //     targetDestination.x = box.x + 1;
-        // } 
+         if (targetDestination.y < box.y) {
+             box.y -= speed * delta_time;
+         }
+         if (targetDestination.x < box.x) {
+             box.x -= speed * delta_time;
+         } 
+         if (targetDestination.y > box.y) {
+             box.y += speed * delta_time;
+         } 
+         if (targetDestination.x > box.x - 300) {
+             box.x += speed * delta_time;
+         } 
 
-        // Check if the mouse is inside the box
-        bool mouseInsideBox = CheckCollisionPointRec(targetDestination, box);
+        //Check if the mouse is inside the box
+        //bool mouseInsideBox = CheckCollisionPointRec(targetDestination, box);
 
-        // Update camera position only if the mouse is outside the box
-        if (!mouseInsideBox) {
-            camera_view.target.x += (targetDestination.x - screenwidth / 2) * delta_time * speed;
-            camera_view.target.y += (targetDestination.y - screenheight / 2) * delta_time * speed;
-        }
+        //// Update camera position only if the mouse is outside the box
+        //if (!mouseInsideBox) {
+        //    camera_view.target.x += (targetDestination.x - screenwidth / 2) * delta_time * speed;
+        //    camera_view.target.y += (targetDestination.y - screenheight / 2) * delta_time * speed;
+        //}
 
         // Smoothly interpolate camera position towards box position
         camera_view.target.x = Lerp(camera_view.target.x, box.x + box.width / 2, 0.1f);
@@ -118,3 +114,9 @@ int main() {
 
     return 0;
 }
+
+// for (int i = 0; i < 3; i++){ # 4 Points
+//  p = P_triangle [3][i] * p.list[i] * pow(1-t, n-i) * pow(t, i)
+// # n = number of points, i = order
+// 1 * P0 * (1-t)**(3-0) * (t**0)
+// 1 * P1 * (1-t)**(3-1) * (t**1)

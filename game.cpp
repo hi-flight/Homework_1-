@@ -13,7 +13,7 @@ Vector2 targetDestination;
 float speed = 900;
 
 // Adjusted the box initialization to be at the center of the screen
-Rectangle box = Rectangle{screenheight/2, screenwidth/2, 300, 300};
+Rectangle box;
 
 struct Character{
     std::string name;
@@ -52,6 +52,8 @@ int main() {
     inputFile >> camera_view.zoom; // Load camera zoom
     inputFile >> EDGE_X[0] >> EDGE_X[1];
     inputFile >> EDGE_Y[0] >> EDGE_Y[1];
+    inputFile >> speed;
+    inputFile >> box.x >> box.y >> box.width >> box.height;
     inputFile.close();
 
     InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");

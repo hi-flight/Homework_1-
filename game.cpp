@@ -10,7 +10,7 @@ float screenheight = 600;
 
 Vector2 targetDestination;
 
-float speed = 900;
+float speed;
 
 // Adjusted the box initialization to be at the center of the screen
 Rectangle box;

@@ -2,20 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
-float Lerp(float start, float end, float t) {
-    return start + t * (end - start);
-}
-
-float Clamp(float value, float min, float max) {
-    if (value < min) {
-        return min;
-    } else if (value > max) {
-        return max;
-    } else {
-        return value;
-    }
-}
+#include <raymath.h>
+#include <vector>
 
 float screenwidth = 800;
 float screenheight = 600;

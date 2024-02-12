@@ -22,10 +22,10 @@ float screenheight = 600;
 
 Vector2 targetDestination;
 
-float speed = 900;
+float speed;
 
 // Adjusted the box initialization to be at the center of the screen
-Rectangle box = Rectangle{screenheight/2, screenwidth/2, 300, 300};
+Rectangle box;
 
 bool zoom = false;
 int main() {
@@ -48,6 +48,9 @@ int main() {
     inputFile >> camera_view.zoom; // Load camera zoom
     inputFile >> EDGE_X[0] >> EDGE_X[1];
     inputFile >> EDGE_Y[0] >> EDGE_Y[1];
+    inputFile >> speed;
+    inputFile >> box.x >> box.y >> box.width >> box.height;
+    
     inputFile.close();
 
     InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");
@@ -64,37 +67,26 @@ int main() {
         worldMousePosition.y = (targetDestination.y - camera_view.offset.y) / camera_view.zoom + camera_view.target.y;
 
         // Archived Cam Movement code
-
-        if (worldMousePosition.x < box.x + box.width / 2) {
+        if (!zoom){
+            if (worldMousePosition.x < box.x + box.width / 2) {
             // Move box left
             box.x -= speed * delta_time;
+            }
+            if (worldMousePosition.x > box.x + box.width / 2) {
+                // Move box right
+                box.x += speed * delta_time;
+            }
+            if (worldMousePosition.y < box.y + 150) {
+                box.y -= speed * delta_time;
+            }
+            //  if (worldMousePosition.x < box.x) {
+            //      box.x -= speed * delta_time;
+            //  } 
+            if (worldMousePosition.y > box.y + 150) {
+                box.y += speed * delta_time;
+            } 
         }
-        if (worldMousePosition.x > box.x + box.width / 2) {
-            // Move box right
-            box.x += speed * delta_time;
-        }
-         if (worldMousePosition.y < box.y + 150) {
-             box.y -= speed * delta_time;
-         }
-        //  if (worldMousePosition.x < box.x) {
-        //      box.x -= speed * delta_time;
-        //  } 
-         if (worldMousePosition.y > box.y + 150) {
-             box.y += speed * delta_time;
-         } 
-        //  if (worldMousePosition.x > box.x - 300) {
-        //      box.x += speed * delta_time;
-        //  } 
-
-        //Check if the mouse is inside the box
-        //bool mouseInsideBox = CheckCollisionPointRec(targetDestination, box);
-
-        //// Update camera position only if the mouse is outside the box
-        //if (!mouseInsideBox) {
-        //    camera_view.target.x += (targetDestination.x - screenwidth / 2) * delta_time * speed;
-        //    camera_view.target.y += (targetDestination.y - screenheight / 2) * delta_time * speed;
-        //}
-
+        
         // Smoothly interpolate camera position towards box position
         camera_view.target.x = Lerp(camera_view.target.x, box.x + box.width / 2, 0.1f);
         camera_view.target.y = Lerp(camera_view.target.y, box.y + box.height / 2, 0.1f);
@@ -109,7 +101,12 @@ int main() {
 
         // Handle zoom
         if (IsMouseButtonPressed(0)) {
-            zoom = !zoom;
+            zoom = true;
+            camera_view.zoom = zoom ? 3.0f : 1.0f;
+        }
+
+        if (IsMouseButtonPressed(1)){
+            zoom = false;
             camera_view.zoom = zoom ? 3.0f : 1.0f;
         }
 

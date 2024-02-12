@@ -43,6 +43,11 @@ int main() {
     }
 
     inputFile >> backgroundFilename;
+    inputFile >> Char1 >> Char1_x >> Char1_y;
+    inputFile >> Char2 >> Char2_x >> Char2_y;
+    inputFile >> Char3 >> Char3_x >> Char3_y;
+    inputFile >> Char4 >> Char4_x >> Char4_y;
+    inputFile >> Char5 >> Char5_x >> Char5_y;
     inputFile >> camera_view.target.x >> camera_view.target.y; // Load camera target
     inputFile >> camera_view.offset.x >> camera_view.offset.y; // Load camera offset
     inputFile >> camera_view.zoom; // Load camera zoom
@@ -50,7 +55,7 @@ int main() {
     inputFile >> EDGE_Y[0] >> EDGE_Y[1];
     inputFile >> speed;
     inputFile >> box.x >> box.y >> box.width >> box.height;
-    
+
     inputFile.close();
 
     InitWindow(screenwidth, screenheight, "Lim, Sta. Cruz, Tadiarca_Homework01");
